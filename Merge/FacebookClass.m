@@ -145,7 +145,7 @@
         NSString *formatFBFirstName = [[NSString alloc] initWithFormat:@"*%@*", fbFirstName];
         NSString *formatFBName = [[NSString alloc] initWithFormat:@"*%@ %@*", fbFirstName,fbLastName];
         
-        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(ANY lastName LIKE[c] %@ AND ANY firstName LIKE[c] %@) OR (ANY NAME Like[c] %@",
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(ANY lastName LIKE[c] %@ AND ANY firstName LIKE[c] %@) OR (ANY NAME Like[c] %@)",
                                   formatFBLastName,formatFBFirstName, formatFBName];
         
         DBContact *contact = [DBContact MR_findFirstWithPredicate:predicate];
