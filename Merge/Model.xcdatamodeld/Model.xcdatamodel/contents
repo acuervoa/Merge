@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model name="" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="2061" systemVersion="12E55" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
+    <entity name="DBContact" representedClassName="DBContact" syncable="YES">
+        <attribute name="address" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="email" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="firstName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="idContact" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="imageFile" optional="YES" attributeType="Binary" syncable="YES"/>
+        <attribute name="lastName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="phone" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <entity name="DBFacebook" representedClassName="DBFacebook" syncable="YES">
+        <attribute name="idContact" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="idFacebook" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="imageURL" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <entity name="DBFacebookPost" representedClassName="DBFacebookPost" syncable="YES">
+        <attribute name="idFacebook" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="idFacebookPost" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="idPost" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="location" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="message" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <entity name="DBTwitter" representedClassName="DBTwitter" syncable="YES">
+        <attribute name="idContact" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="idTwitter" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="imageURL" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="location" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="nickTwitter" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <entity name="DBTwitterPost" representedClassName="DBTwitterPost" syncable="YES">
+        <attribute name="created_at" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="idPost" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="idTwitter" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="latitude" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="longitude" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="message" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <elements>
+        <element name="DBContact" positionX="-468" positionY="-192" width="128" height="165"/>
+        <element name="DBFacebook" positionX="-263" positionY="-72" width="128" height="90"/>
+        <element name="DBFacebookPost" positionX="-65" positionY="-66" width="128" height="120"/>
+        <element name="DBTwitter" positionX="-270" positionY="-267" width="128" height="120"/>
+        <element name="DBTwitterPost" positionX="-65" positionY="-270" width="128" height="135"/>
+    </elements>
+</model>
