@@ -51,12 +51,15 @@
     MKCoordinateRegion region = {{0.0, 0.0}, {0.0,0.0}};
     region.center.latitude = 40.429178;
     region.center.longitude = -3.7025;
-    region.span.longitudeDelta = 1.5f;
-    region.span.latitudeDelta = 1.5f;
+    region.span.longitudeDelta = 10.5f;
+    region.span.latitudeDelta = 10.5f;
     [self.mapView setRegion:region animated:YES];
     [self.mapView setDelegate:self];
     
+
+    
     [self.activityIndicator startAnimating];
+    [self performSelector:@selector(zoomInToMyLocation) withObject:nil afterDelay:2];
     [self searchTWLocation];
     [self searchFBLocation];
     activityIndicator.hidesWhenStopped = YES;
@@ -64,7 +67,19 @@
     
 }
 
-
+-(void)zoomInToMyLocation
+{
+    MKCoordinateRegion region = {{0.0, 0.0}, {0.0,0.0}};
+    region.center.latitude = 40.429178;
+    region.center.longitude = -3.7025;
+    region.span.longitudeDelta = 10.5f;
+    region.span.latitudeDelta = 10.5f;
+    [self.mapView setRegion:region animated:YES];
+}
+-(void)viewWillDisappear:(BOOL)animated
+{
+    [NSObject cancelPreviousPerformRequestsWithTarget:self];
+}
 
 - (void)didReceiveMemoryWarning
 {
@@ -182,6 +197,7 @@
     LocationAnnotation *locationAnnotation = (LocationAnnotation *)view.annotation;
     [self performSegueWithIdentifier:@"ShowDetailSegue" sender:locationAnnotation];
 }
+
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     if ([segue.identifier isEqualToString:@"ShowDetailSegue"]){
@@ -194,4 +210,21 @@
     }
 }
 
+-(void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view
+{
+    if(![view.annotation isKindOfClass:[LocationAnnotation class]])
+    {
+        return;
+    }
+    
+    LocationAnnotation *locationAnnotation = (LocationAnnotation *)view.annotation;
+    if(!locationAnnotation.subtitle)
+        [locationAnnotation updateSubtitle];
+    
+    if(!view.leftCalloutAccessoryView){
+        UIButton *leftViewButton = [[UIButton alloc] initWithFrame:CGRectMake(0.0, 0.0, 48.0, 32.0)];
+        [leftViewButton setBackgroundImage:locationAnnotation.image forState:UIControlStateNormal];
+        view.leftCalloutAccessoryView = leftViewButton;
+    }
+}
 @end
