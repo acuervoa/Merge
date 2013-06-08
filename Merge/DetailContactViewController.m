@@ -15,6 +15,8 @@
 {
     FacebookClass *fbContact;
     TwitterClass *twContact;
+    
+    
 }
 
 @end
@@ -66,16 +68,40 @@
     DBFacebook *dbFacebook = [DBFacebook MR_findFirstByAttribute:@"idContact" withValue:currentContact.idContact];
     if(dbFacebook){
         [self writeFBContact];
+    }else{
+        [self hiddenFBContact];
     }
     
     DBTwitter *dbTwitter =[DBTwitter MR_findFirstByAttribute:@"idContact" withValue:currentContact.idContact];
     if(dbTwitter){
         [self writeTWContact];
+    }else{
+        [self hiddenTWContact];
     }
     
     //NSLog(@"%@", currentContact);
 }
 
+-(void)hiddenFBContact
+{
+    fbNameLabel.hidden = YES;
+    fbImageView.hidden = YES;
+    fbPostTextView.hidden = YES;
+    fbDatePostLabel.hidden = YES;
+    fbFromPostLabel.hidden = YES;
+    
+    
+    
+}
+
+-(void)hiddenTWContact
+{
+    twNameLabel.hidden = YES;
+    twStatusTextView.hidden = YES;
+    twDateStatusLabel.hidden = YES;
+    twFromPostLabel.hidden = YES;
+    twImageView.hidden = YES;
+}
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -215,6 +241,9 @@
     twDateStatusLabel.text = dbTwitterPost.created_at;
     
     [twImageView setImageWithURL:[NSURL URLWithString:dbTwitter.imageURL] ];
+    
+    if(fbImageView.hidden)
+        twNameLabel.frame = CGRectMake(10,10,twNameLabel.frame.size.width, twNameLabel.frame.size.height);
     
 }
 @end
