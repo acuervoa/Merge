@@ -47,7 +47,11 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	
+    
+}
+
+-(void)viewWillAppear:(BOOL)animated{
+    
     MKCoordinateRegion region = {{0.0, 0.0}, {0.0,0.0}};
     region.center.latitude = 40.429178;
     region.center.longitude = -3.7025;
@@ -57,10 +61,7 @@
     [self.mapView setDelegate:self];
     
     [self searchTWLocation];
-    
 }
-
-
 
 - (void)didReceiveMemoryWarning
 {
@@ -78,14 +79,35 @@
 -(void)searchTWLocation
 {
     [self.activityIndicator startAnimating];
+    NSMutableArray *locationAnnotations = [[NSMutableArray alloc]init];
     
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0),^{
-        //twitterClass = [[TwitterClass alloc] init];
-        twitterClass = [TwitterClass sharedInstance];
-        NSData *data = [twitterClass loadLocations];
-        [self performSelectorOnMainThread:@selector(saveData:) withObject:data waitUntilDone:YES];
+    NSArray *tweets = [DBTwitterPost MR_findAll];
+    
+    int i = 0;
+    while (i < [tweets count])
+    {
+        DBTwitterPost *twPost = [tweets objectAtIndex:i];
         
-    });
+        if(([twPost.latitude doubleValue] != 0.0f) && ([twPost.longitude doubleValue] != 0.0f)){
+           
+
+            CLLocationCoordinate2D coord;
+            coord.latitude = [twPost.latitude doubleValue];
+            coord.longitude = [twPost.longitude doubleValue];
+            
+            DBTwitter *dbTwitter = [DBTwitter MR_findFirstByAttribute:@"idTwitter" withValue:[twPost valueForKey:@"idTwitter"]];
+            LocationAnnotation *location = [[LocationAnnotation alloc] initWithImageURL:[[NSURL alloc] initWithString:dbTwitter.imageURL] title:dbTwitter.nickTwitter coordinate:coord];
+            
+            [locationAnnotations addObject:location];
+        }
+        i++;
+    }
+    
+    if(locationAnnotations.count >0)
+    {
+        [mapView addAnnotations:locationAnnotations];
+    }
+    
     
 }
 

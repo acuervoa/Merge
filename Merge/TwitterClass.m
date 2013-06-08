@@ -309,8 +309,8 @@
         
         NSDictionary *coordinates = [status objectForKey:@"coordinates"];
         if((NSNull *) coordinates != [NSNull null]){
-            latitude = [[coordinates objectForKey:@"coordinates"] objectAtIndex:0];
-            longitude = [[coordinates objectForKey:@"coordinates"] objectAtIndex:1];
+            latitude = [[coordinates objectForKey:@"coordinates"] objectAtIndex:1];
+            longitude = [[coordinates objectForKey:@"coordinates"] objectAtIndex:0];
         }else{
             latitude = 0;
             longitude = 0;
