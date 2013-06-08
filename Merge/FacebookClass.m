@@ -349,13 +349,7 @@
              NSDictionary *jsonDic = [NSJSONSerialization JSONObjectWithData:responseData
                                                                      options:kNilOptions
                                                                        error:&error];
-             
-             //self.FBPostDictionary = jsonDic;
              [self saveLocations:[jsonDic objectForKey:@"data"]];
-
-             //             [self finishLoadContacts];
-             
-             
          }
          
          dispatch_semaphore_signal(sema);
@@ -365,26 +359,29 @@
          
 -(void)saveLocations:(NSArray *)locations
 {
-    for (NSDictionary *datos in locations) {
+    NSLog(@"%@", locations);
+    for (NSObject *datos in locations) {
        
-        NSNumber *author_id = [datos valueForKey:@"author_id"];
-        NSNumber *latitude = [datos valueForKeyPath:@"coords.latitude"];
-        NSNumber *longitude = [datos valueForKeyPath:@"coords.longitude"];
-        NSNumber *timestamp = [datos valueForKey:@"timestamp"];
-        NSString *message = [datos valueForKey:@"message"];
+        NSNumber *author_idD = [datos valueForKey:@"author_uid"];
+        NSNumber *latitudeD = [datos valueForKeyPath:@"coords.latitude"];
+        NSNumber *longitudeD = [datos valueForKeyPath:@"coords.longitude"];
+        NSNumber *timestampD = [datos valueForKey:@"timestamp"];
+        NSString *messageD = [datos valueForKey:@"message"];
         
-        DBFacebookPost *dbFacebookPost = [DBFacebookPost MR_findFirstByAttribute:@"idFacebook" withValue:author_id];
+        DBFacebookPost *dbFacebookPost = [DBFacebookPost MR_findFirstByAttribute:@"idFacebook" withValue:author_idD];
         
-        NSDictionary *postDictionary = @{@"idFacebook":author_id,
-                                         @"latitude":latitude,
-                                         @"longitude":longitude,
-                                         @"timestamp":timestamp,
-                                         @"message":message
-                                         };
+        NSDictionary *postDictionary = [[NSDictionary alloc] initWithObjectsAndKeys:author_idD, @"idFacebook",
+                                        latitudeD, @"latitude",
+                                        longitudeD, @"longitude",
+                                        timestampD, @"timestamp",
+                                        messageD, @"message",
+                                        nil
+                                        ];
+        NSLog(@"%@", postDictionary);
         
         if(dbFacebookPost != nil)
         {
-            [DBFacebookPost updateEntityWithIdFacebook:author_id withDictionary:postDictionary];
+            [DBFacebookPost updateEntityWithIdFacebook:(NSNumber *)author_idD withDictionary:postDictionary];
         }else{
             [DBFacebookPost createEntityWithDictionary:postDictionary];
         }

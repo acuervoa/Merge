@@ -14,8 +14,8 @@
 
 @property (nonatomic, retain) NSNumber * idFacebook;
 @property (nonatomic, retain) NSString * message;
-@property (nonatomic, retain) NSString * latitude;
-@property (nonatomic, retain) NSString * longitude;
+@property (nonatomic, retain) NSNumber * latitude;
+@property (nonatomic, retain) NSNumber * longitude;
 @property (nonatomic, retain) NSNumber * timestamp;
 
 + (DBFacebookPost *)createEntityWithDictionary:(NSDictionary *)aDictionary;

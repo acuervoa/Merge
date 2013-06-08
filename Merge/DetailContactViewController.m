@@ -130,7 +130,6 @@
 
 -(void)thisAccountTwitterLoadUpdated
 {
-    //[twContact getTWContactWithId:currentContact.idContact];
     [self writeTWContactInformation];
 }
 
