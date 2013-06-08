@@ -16,11 +16,11 @@
         <attribute name="imageURL" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <entity name="DBFacebookPost" representedClassName="DBFacebookPost" syncable="YES">
-        <attribute name="idFacebook" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="idFacebookPost" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
-        <attribute name="idPost" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="location" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="idFacebook" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="latitude" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="longitude" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="message" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="timestamp" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
     </entity>
     <entity name="DBTwitter" representedClassName="DBTwitter" syncable="YES">
         <attribute name="idContact" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>

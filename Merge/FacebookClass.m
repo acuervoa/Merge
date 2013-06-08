@@ -7,6 +7,7 @@
 //
 
 #import "FacebookClass.h"
+#import "DBFacebookPost.h"
 
 @implementation FacebookClass
 @synthesize delegate;
@@ -35,6 +36,7 @@
 -(void)finishSaveContacts
 {
     NSLog(@"finishSaveContacts");
+    
     [delegate thisSaveContactsFinished];
    
 }
@@ -53,7 +55,7 @@
     //Specify App Id an permissions
     NSDictionary *options = @{
                               ACFacebookAppIdKey: [[NSBundle mainBundle] objectForInfoDictionaryKey:@"FacebookAppID"],
-                              ACFacebookPermissionsKey:@[@"email",@"read_stream", @"user_hometown", @"user_location", @"friends_hometown",@"friends_location" ],
+                              ACFacebookPermissionsKey:@[@"email",@"read_stream", @"user_hometown", @"user_location", @"friends_hometown",@"friends_location",@"user_checkins", @"friends_checkins"],
                               ACFacebookAudienceKey:ACFacebookAudienceFriends
                               };
     [facebookAccountStore requestAccessToAccountsWithType:facebookAccountType
@@ -166,7 +168,7 @@
         
         
     }
-    
+    [self getLocations];
     [self finishSaveContacts];
 }
 
@@ -187,6 +189,7 @@
         [DBFacebook createEntityWithDictionary:fbDictionary];
     else
         [DBFacebook updateEntityWithIdFacebook:(NSNumber *)contactFB.idFacebook withDictionary:fbDictionary];
+    
     
 }
 
@@ -318,6 +321,74 @@
      }];
     
    
+}
+
+-(void)getLocations
+{
+    NSString *accessToken = [NSString stringWithFormat:@"%@", facebookAccount.credential.oauthToken];
+    NSString *fql= @"SELECT message, author_uid, coords,timestamp FROM location_post WHERE author_uid IN (SELECT uid2 FROM friend WHERE uid1=me())";
+    
+    NSDictionary *parameters = @{@"q":fql,@"access_token":accessToken};
+    
+    NSURL *feedURL = [NSURL URLWithString:[NSString stringWithFormat:@"https://graph.facebook.com/fql"]];
+    
+    SLRequest *feedRequest = [SLRequest requestForServiceType:SLServiceTypeFacebook
+                                                requestMethod:SLRequestMethodGET
+                                                          URL:feedURL
+                                                   parameters:parameters];
+    
+    feedRequest.account = facebookAccount;
+    dispatch_semaphore_t sema = dispatch_semaphore_create(0);
+    [feedRequest performRequestWithHandler:
+     ^(NSData *responseData, NSHTTPURLResponse *urlResponse, NSError *error) {
+         if (error){
+             [self throwAlertWithTitle:@"Error" message:@"An error ocurred at Facebook connection. Try again."];
+         }
+         else
+         {
+             NSDictionary *jsonDic = [NSJSONSerialization JSONObjectWithData:responseData
+                                                                     options:kNilOptions
+                                                                       error:&error];
+             
+             //self.FBPostDictionary = jsonDic;
+             [self saveLocations:[jsonDic objectForKey:@"data"]];
+
+             //             [self finishLoadContacts];
+             
+             
+         }
+         
+         dispatch_semaphore_signal(sema);
+     }];
+    dispatch_semaphore_wait(sema, DISPATCH_TIME_FOREVER);
+}
+         
+-(void)saveLocations:(NSArray *)locations
+{
+    for (NSDictionary *datos in locations) {
+       
+        NSNumber *author_id = [datos valueForKey:@"author_id"];
+        NSNumber *latitude = [datos valueForKeyPath:@"coords.latitude"];
+        NSNumber *longitude = [datos valueForKeyPath:@"coords.longitude"];
+        NSNumber *timestamp = [datos valueForKey:@"timestamp"];
+        NSString *message = [datos valueForKey:@"message"];
+        
+        DBFacebookPost *dbFacebookPost = [DBFacebookPost MR_findFirstByAttribute:@"idFacebook" withValue:author_id];
+        
+        NSDictionary *postDictionary = @{@"idFacebook":author_id,
+                                         @"latitude":latitude,
+                                         @"longitude":longitude,
+                                         @"timestamp":timestamp,
+                                         @"message":message
+                                         };
+        
+        if(dbFacebookPost != nil)
+        {
+            [DBFacebookPost updateEntityWithIdFacebook:author_id withDictionary:postDictionary];
+        }else{
+            [DBFacebookPost createEntityWithDictionary:postDictionary];
+        }
+    }
 }
 
 -(NSString *)formatDateFromCreateDate:(NSString *)dateString

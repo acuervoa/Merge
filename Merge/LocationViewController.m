@@ -61,6 +61,7 @@
     [self.mapView setDelegate:self];
     
     [self searchTWLocation];
+    [self searchFBLocation];
 }
 
 - (void)didReceiveMemoryWarning
@@ -113,6 +114,8 @@
 
 -(void)searchFBLocation
 {
+    NSMutableArray *locationAnnotations = [[NSMutableArray alloc]init];
+    
     
 }
 
