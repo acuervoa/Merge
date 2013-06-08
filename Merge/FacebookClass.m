@@ -7,7 +7,7 @@
 //
 
 #import "FacebookClass.h"
-#import "DBFacebookPost.h"
+
 
 @implementation FacebookClass
 @synthesize delegate;
@@ -359,7 +359,7 @@
          
 -(void)saveLocations:(NSArray *)locations
 {
-    NSLog(@"%@", locations);
+    
     for (NSObject *datos in locations) {
        
         NSNumber *author_idD = [datos valueForKey:@"author_uid"];
@@ -377,7 +377,7 @@
                                         messageD, @"message",
                                         nil
                                         ];
-        NSLog(@"%@", postDictionary);
+       
         
         if(dbFacebookPost != nil)
         {

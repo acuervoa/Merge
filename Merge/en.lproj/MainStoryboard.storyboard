@@ -127,19 +127,6 @@
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" bouncesZoom="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QZt-ua-Sl8">
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Hdc-rw-KWl">
-                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                        <state key="normal" title="Show Location">
-                                            <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
-                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                        </state>
-                                        <state key="highlighted">
-                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                        </state>
-                                        <connections>
-                                            <segue destination="UH5-Wh-dXv" kind="push" id="UTR-4c-F85"/>
-                                        </connections>
-                                    </button>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="I6A-ao-phq">
                                         <constraints>
                                             <constraint firstAttribute="width" constant="268" id="Sjh-e0-zr6"/>
@@ -258,14 +245,12 @@
                                     <constraint firstItem="eYq-HV-yV3" firstAttribute="top" secondItem="QZt-ua-Sl8" secondAttribute="top" constant="228" id="GkM-0s-pWm"/>
                                     <constraint firstItem="I6A-ao-phq" firstAttribute="leading" secondItem="QZt-ua-Sl8" secondAttribute="leading" constant="20" symbolic="YES" type="default" id="O8Q-dH-8ln"/>
                                     <constraint firstItem="L3P-JE-r5I" firstAttribute="top" secondItem="eYq-HV-yV3" secondAttribute="bottom" constant="8" symbolic="YES" type="default" id="OYq-ch-4n0"/>
+                                    <constraint firstAttribute="bottom" secondItem="QJJ-KB-XCG" secondAttribute="bottom" constant="168" id="QjS-Bc-N0W"/>
                                     <constraint firstAttribute="trailing" secondItem="QJJ-KB-XCG" secondAttribute="trailing" constant="20" symbolic="YES" type="default" id="RsV-P4-HVf"/>
                                     <constraint firstItem="STV-eb-EeX" firstAttribute="top" secondItem="QZt-ua-Sl8" secondAttribute="top" constant="106" id="W4G-5r-JFM"/>
                                     <constraint firstItem="kih-Gj-kJc" firstAttribute="leading" secondItem="QZt-ua-Sl8" secondAttribute="leading" constant="21" id="WD8-T3-hbL"/>
-                                    <constraint firstItem="zgZ-Nh-f7V" firstAttribute="centerX" secondItem="Hdc-rw-KWl" secondAttribute="centerX" type="default" id="XaK-ah-axp"/>
-                                    <constraint firstAttribute="bottom" secondItem="Hdc-rw-KWl" secondAttribute="bottom" constant="109" id="YQb-Wh-01y"/>
                                     <constraint firstAttribute="trailing" secondItem="wq7-zp-ysr" secondAttribute="trailing" constant="20" symbolic="YES" type="default" id="YXe-7j-VhG"/>
                                     <constraint firstAttribute="trailing" secondItem="hUr-J4-6G9" secondAttribute="trailing" constant="20" symbolic="YES" type="default" id="c5T-cY-mJi"/>
-                                    <constraint firstItem="Hdc-rw-KWl" firstAttribute="top" secondItem="QZt-ua-Sl8" secondAttribute="top" constant="398" id="cto-0y-Huz"/>
                                     <constraint firstItem="KQa-4T-tVN" firstAttribute="top" secondItem="QZt-ua-Sl8" secondAttribute="top" constant="41" id="dri-V7-Ses"/>
                                     <constraint firstItem="wq7-zp-ysr" firstAttribute="leading" secondItem="STV-eb-EeX" secondAttribute="trailing" constant="8" symbolic="YES" type="default" id="fUw-ne-AXB"/>
                                     <constraint firstItem="hUr-J4-6G9" firstAttribute="leading" secondItem="STV-eb-EeX" secondAttribute="trailing" constant="8" symbolic="YES" type="default" id="gqQ-K9-lEF"/>
@@ -419,6 +404,7 @@
                     <connections>
                         <outlet property="activityIndicator" destination="Ruz-Td-98u" id="qDu-aN-jnO"/>
                         <outlet property="mapView" destination="vqX-rT-niu" id="VjG-di-tkr"/>
+                        <segue destination="sW7-fU-bb0" kind="push" identifier="ShowDetailSegue" id="QAr-02-dRz"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rwu-o2-SId" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -553,6 +539,6 @@
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
         <segue reference="zAR-Em-NoO"/>
-        <segue reference="UTR-4c-F85"/>
+        <segue reference="QAr-02-dRz"/>
     </inferredMetricsTieBreakers>
 </document>

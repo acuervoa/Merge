@@ -11,6 +11,7 @@
 #import <Accounts/Accounts.h>
 #import "DBContact.h"
 #import "DBFacebook.h"
+#import "DBFacebookPost.h"
 
 @protocol FacebookClassDelegate <NSObject>
 

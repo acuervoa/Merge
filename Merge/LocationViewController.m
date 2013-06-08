@@ -10,6 +10,7 @@
 #import "TwitterClass.h"
 #import "FacebookClass.h"
 #import "LocationAnnotation.h"
+#import "DetailContactViewController.h"
 
 
 
@@ -47,11 +48,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-}
-
--(void)viewWillAppear:(BOOL)animated{
-    
     MKCoordinateRegion region = {{0.0, 0.0}, {0.0,0.0}};
     region.center.latitude = 40.429178;
     region.center.longitude = -3.7025;
@@ -60,9 +56,15 @@
     [self.mapView setRegion:region animated:YES];
     [self.mapView setDelegate:self];
     
+    [self.activityIndicator startAnimating];
     [self searchTWLocation];
     [self searchFBLocation];
+    activityIndicator.hidesWhenStopped = YES;
+    [self.activityIndicator stopAnimating];
+    
 }
+
+
 
 - (void)didReceiveMemoryWarning
 {
@@ -79,7 +81,7 @@
 
 -(void)searchTWLocation
 {
-    [self.activityIndicator startAnimating];
+    
     NSMutableArray *locationAnnotations = [[NSMutableArray alloc]init];
     
     NSArray *tweets = [DBTwitterPost MR_findAll];
@@ -97,7 +99,11 @@
             coord.longitude = [twPost.longitude doubleValue];
             
             DBTwitter *dbTwitter = [DBTwitter MR_findFirstByAttribute:@"idTwitter" withValue:[twPost valueForKey:@"idTwitter"]];
-            LocationAnnotation *location = [[LocationAnnotation alloc] initWithImageURL:[[NSURL alloc] initWithString:dbTwitter.imageURL] title:dbTwitter.nickTwitter coordinate:coord];
+            DBContact *dbContact = [DBContact MR_findFirstByAttribute:@"idContact" withValue:dbTwitter.idContact];
+            LocationAnnotation *location = [[LocationAnnotation alloc] initWithImageURL:[[NSURL alloc] initWithString:dbTwitter.imageURL]
+                                                                                  title:dbTwitter.nickTwitter
+                                                                             coordinate:coord
+                                                                                contact:dbContact];
             
             [locationAnnotations addObject:location];
         }
@@ -116,18 +122,37 @@
 {
     NSMutableArray *locationAnnotations = [[NSMutableArray alloc]init];
     
+    NSArray *post = [DBFacebookPost MR_findAll];
+    
+    int i = 0;
+    while (i < [post count])
+    {
+        DBFacebookPost *fbPost = [post objectAtIndex:i];
+        
+        if(([fbPost.latitude doubleValue] != 0.0f) && ([fbPost.longitude doubleValue] != 0.0f)){
+            
+            
+            CLLocationCoordinate2D coord;
+            coord.latitude = [fbPost.latitude doubleValue];
+            coord.longitude = [fbPost.longitude doubleValue];
+            
+            DBFacebook *dbFacebook = [DBFacebook MR_findFirstByAttribute:@"idFacebook" withValue:[fbPost valueForKey:@"idFacebook"]];
+            DBContact *dbContact = [DBContact MR_findFirstByAttribute:@"idContact" withValue:dbFacebook.idContact];
+            LocationAnnotation *location = [[LocationAnnotation alloc] initWithImageURL:[[NSURL alloc] initWithString:dbFacebook.imageURL] title:dbContact.name coordinate:coord contact:dbContact];
+            
+            [locationAnnotations addObject:location];
+        }
+        i++;
+    }
+    
+    if(locationAnnotations.count >0)
+    {
+        [mapView addAnnotations:locationAnnotations];
+    }
+    
     
 }
 
--(void)populateMapWithMessage
-{
-    
-}
-
--(void)saveData:(NSData *)data
-{
-    
-}
 
 - (MKAnnotationView *)mapView:(MKMapView *)aMapView viewForAnnotation:(id<MKAnnotation>)annotation
 {
@@ -147,6 +172,26 @@
         return annotationView;
     }
     return nil;
+}
+
+-(void)mapView:(MKMapView *)mapView annotationView:(MKAnnotationView *)view calloutAccessoryControlTapped:(UIControl *)control
+{
+    if(![view.annotation isKindOfClass:[LocationAnnotation class]])
+        return;
+    
+    LocationAnnotation *locationAnnotation = (LocationAnnotation *)view.annotation;
+    [self performSegueWithIdentifier:@"ShowDetailSegue" sender:locationAnnotation];
+}
+-(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if ([segue.identifier isEqualToString:@"ShowDetailSegue"]){
+        DetailContactViewController *detailVC = [segue destinationViewController];
+        
+        LocationAnnotation *selectedAnnotation = (LocationAnnotation *)sender;
+        
+        detailVC.currentContact = selectedAnnotation.contact;
+        
+    }
 }
 
 @end
