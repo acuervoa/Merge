@@ -15,13 +15,15 @@
 @synthesize coordinate;
 @synthesize image;
 @synthesize imageURL;
+@synthesize contact;
 
--(id)initWithImageURL:(NSURL *)anImageURL title:(NSString *)aTitle coordinate:(CLLocationCoordinate2D)aCoordinate
+-(id)initWithImageURL:(NSURL *)anImageURL title:(NSString *)aTitle coordinate:(CLLocationCoordinate2D)aCoordinate contact:(DBContact *)dbContact
 {
     if(self = [super init]){
         self.imageURL = anImageURL;
         self.title = aTitle;
         self.coordinate =aCoordinate;
+        self.contact = dbContact;
     }
     return self;
 }

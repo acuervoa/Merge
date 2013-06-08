@@ -12,10 +12,14 @@
 
 @interface DBFacebookPost : NSManagedObject
 
-@property (nonatomic, retain) NSString * idFacebook;
-@property (nonatomic, retain) NSString * idPost;
+@property (nonatomic, retain) NSNumber * idFacebook;
 @property (nonatomic, retain) NSString * message;
-@property (nonatomic, retain) NSString * location;
-@property (nonatomic, retain) NSNumber * idFacebookPost;
+@property (nonatomic, retain) NSNumber * latitude;
+@property (nonatomic, retain) NSNumber * longitude;
+@property (nonatomic, retain) NSNumber * timestamp;
+
++ (DBFacebookPost *)createEntityWithDictionary:(NSDictionary *)aDictionary;
++ (DBFacebookPost *)updateEntityWithIdFacebook:(NSNumber *)idFacebook withDictionary:(NSDictionary *)aDictionary;
+- (void)deleteEntity;
 
 @end

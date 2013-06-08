@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import <MapKit/MapKit.h>
+#import "DBContact.h"
 
 
 @interface LocationAnnotation : NSObject <MKAnnotation>
@@ -21,7 +22,8 @@
 //Other properties
 @property (nonatomic, strong) UIImage *image;
 @property (nonatomic, strong) NSURL *imageURL;
+@property (nonatomic, strong) DBContact *contact;
 
--(id)initWithImageURL:(NSURL *)anImageURL title:(NSString *)aTitle coordinate:(CLLocationCoordinate2D) aCoordinate;
+-(id)initWithImageURL:(NSURL *)anImageURL title:(NSString *)aTitle coordinate:(CLLocationCoordinate2D) aCoordinate contact:(DBContact *)contact;
 -(void)updateSubtitle;
 @end
